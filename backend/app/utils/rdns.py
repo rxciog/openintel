@@ -1,13 +1,14 @@
 import socket
 import dns.resolver
+import logging
+
+logger = logging.getLogger(__name__)
 
 def reverse_dns_lookup(ip: str) -> str | None:
     try: 
         hostname, _, _ = socket.gethostbyaddr(ip)
         return hostname
-    #except (socket.error, socket.gaierror, TimeoutError):
-    except Exception  as e:
-        print(e)
+    except (socket.error, socket.gaierror, TimeoutError):
         return None
     
 def extract_base_domain(hostname: str) -> str | None:
@@ -34,7 +35,8 @@ def get_a_records(domain: str) -> list | str :
         result = [str(ip) for ip in a_records]
     
     except Exception as e:
-        result = f"DNS Error: {str(e)}"
+        logger.warning("DNS A lookup failed for %s: %s", domain, e)
+        return None
 
     return result
 
@@ -44,7 +46,8 @@ def get_mx_records(domain: str) -> list | None :
 
         result = [str(mx.exchange) for mx in mx_records]
     except Exception as e:
-        result = f"DNS Error: {str(e)}"
+        logger.warning("DNS MX lookup failed for %s: %s", domain, e)
+        return None
 
     return result
 
