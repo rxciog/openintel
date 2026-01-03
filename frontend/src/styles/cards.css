@@ -1,0 +1,36 @@
+.card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  background: white;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.35rem 0;
+}
+
+.label {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.value {
+  font-weight: 500;
+  text-align: right;
+  max-width: 60%;
+  word-break: break-word;
+}
