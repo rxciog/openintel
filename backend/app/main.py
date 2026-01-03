@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from .routers import ip, domain
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI(
     title="OpenIntel API",
@@ -7,8 +9,20 @@ app = FastAPI(
     version="0.1.0",
 )
 
-app.include_router(ip.router, prefix="/analyze", tags=["ip"])
-app.include_router(domain.router, prefix="/analyze", tags=["domain"])
+origins = [
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(ip.router, prefix="", tags=["ip"])
+app.include_router(domain.router, prefix="", tags=["domain"])
 
 @app.get("/health")
 def health():
