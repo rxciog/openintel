@@ -50,10 +50,11 @@ defineProps<{
           :version="result.data.ssl.version"
         />
 
-        <DNSCard
-           v-if="result.kind === 'domain' && result.data.dns"
-           :records="result.data.dns"
-         />
+        <DNSCard 
+          v-if="result.kind === 'domain' && result.data.dns"
+          :ips="result.data.dns.ips"
+          :mx="result.data.dns.mx"
+        />
   
         
       </div>  
