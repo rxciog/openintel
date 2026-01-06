@@ -1,4 +1,3 @@
-const API_BASE = 'http://localhost:8000'
 
 function isIp(value: string): boolean {
   // IPv4 or IPv6 
@@ -23,7 +22,7 @@ export async function analyze(query: string) {
     ? { ip: query }
     : { domain: normalizeDomain(query) }
 
-  const res = await fetch(`${API_BASE}${endpoint}`, {
+  const res = await fetch(`api/${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
