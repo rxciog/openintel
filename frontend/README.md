@@ -1,5 +1,71 @@
-# Vue 3 + TypeScript + Vite
+# Frontend (OpenIntel UI)
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This directory contains the **frontend web application** for OpenIntel.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Tech Stack
+- Node.js 20
+- Vite
+- Vue 3
+- Nginx
+- Docker
+
+---
+
+## Running with Docker (Recommended)
+
+From the **project root**:
+
+```bash
+docker compose up --build frontend
+```
+
+Or from this directory:
+
+```bash
+docker build -t openintel-frontend .
+docker run -p 80:80 openintel-frontend
+```
+
+The app will be available at:
+
+```
+http://localhost
+```
+
+---
+
+## Frontend → Backend Communication
+
+The frontend **does not talk directly to the backend**.
+
+All API requests are sent to:
+
+```
+/api/ip
+/api/domain
+```
+
+These are proxied by **Nginx** to the backend service.
+
+---
+
+## Local Development (Optional)
+
+```bash
+npm install
+npm run dev
+```
+
+This starts a local dev server (not Docker-based).
+
+---
+
+## Build Output
+
+The production build is generated into:
+
+```
+dist/
+```
+
+and served by Nginx inside the container.
