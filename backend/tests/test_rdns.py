@@ -7,7 +7,7 @@ def test_reverse_dns_lookup_success(mocker):
     mock_socket.return_value = ('google.com', [], [])
     assert reverse_dns_lookup('8.8.8.8') == "google.com"
 
-def test_reverse_dns_lookup_success(mocker):
+def test_reverse_dns_lookup_fail(mocker):
     mock_socket = mocker.patch('app.utils.rdns.socket.gethostbyaddr', side_effect =socket.error)
 
     assert reverse_dns_lookup('0.0.0.0') == None
