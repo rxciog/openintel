@@ -130,7 +130,7 @@ docker exec -it openintel-backend sh
 ## Roadmap
 
 -   Automated backend testing (pytest)
--   CI/CD pipeline (Jenkins)
+-   CI/CD pipeline (Jenkins) 
 -   HTTPS with Certbot + Nginx
 -   Image versioning and tagging
 
