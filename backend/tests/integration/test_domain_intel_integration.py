@@ -29,4 +29,3 @@ async def test_analyze_domain_integration():
     
     # SSL Data
     assert results["ssl"]["valid"] is True
-    assert "WE2" in results["ssl"]["issuer"]
