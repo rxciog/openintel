@@ -14,6 +14,12 @@ def test_extract_domain(input_url, expected):
 @pytest.mark.asyncio
 async def test_analyze_domain_flow(mocker):
     # Mock all imported utilities
+    mock_cache = mocker.patch('app.services.domain_intel.cache')
+    mocker.patch('app.services.domain_intel.logger')
+    
+    # Ensure cache returns None (Cache Miss)
+    mock_cache.get.return_value = None
+
     mock_a = mocker.patch('app.services.domain_intel.get_a_records')
     mock_mx = mocker.patch('app.services.domain_intel.get_mx_records')
     mock_rdap_dom = mocker.patch('app.services.domain_intel.look_up_radp_domain')
@@ -35,8 +41,27 @@ async def test_analyze_domain_flow(mocker):
     assert result["ip_intel"]["asn"] == "123"
     assert result["ssl"]["valid"] is True
 
+    # Verify cache was set
+    mock_cache.set.assert_called_once()
+
     # Check that IP lookup was called with the result from DNS lookup
     mock_rdap_ip.assert_called_once_with("1.1.1.1")
+
+@pytest.mark.asyncio
+async def test_analyze_domain_cache_hit(mocker):
+    mock_cache = mocker.patch('app.services.domain_intel.cache')
+    mocker.patch('app.services.domain_intel.logger')
+    
+    cached_data = {"domain": "cached.com", "cached": True}
+    mock_cache.get.return_value = cached_data
+
+    # This should return immediately without calling any lookups
+    result = await analyze_domain("cached.com")
+
+    assert result == cached_data
+    mock_cache.get.assert_called_with("domain:cached.com")
+    # Verify that a lookup function was NOT called
+    assert mocker.patch('app.services.domain_intel.get_a_records').call_count == 0
 
 @pytest.mark.asyncio
 async def test_analyze_domain_invalid_input(mocker):

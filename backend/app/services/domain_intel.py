@@ -3,7 +3,12 @@ from ..utils.rdap.ip import look_up_rdap_ip
 from ..utils.rdap.domain import look_up_radp_domain
 from ..utils.rdns import get_a_records, get_mx_records
 from ..utils.ssl_checker import get_ssl_certificate_info
+from .cache import cache
+import logging
 
+logger = logging.getLogger(__name__)
+
+DOMAIN_TTL = 60 * 60
 
 def extract_domain(value: str) -> str | None:
     value = value.strip()
@@ -25,11 +30,18 @@ def extract_domain(value: str) -> str | None:
 async def analyze_domain(input_value: str):
     domain = extract_domain(input_value)
 
+
     if not domain:
         return {
             "valid": False,
             "message": "Could not extract domain"
         }
+
+    cache_key = f"domain:{domain}"
+    cached = cache.get(cache_key)
+    if cached: 
+        logger.info(f"Cache hit for domain: {domain}")
+        return cached
 
     results = {
         "domain": domain,
@@ -58,6 +70,7 @@ async def analyze_domain(input_value: str):
     
     results["ssl"] = get_ssl_certificate_info(domain)
     
+    cache.set(cache_key, results, DOMAIN_TTL)
     return results
 
 
