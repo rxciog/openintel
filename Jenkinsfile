@@ -1,12 +1,51 @@
 pipeline {
     agent any
 
+    enviroment {
+        COMPOSE_FILE = 'docker-compose.yml'
+    }
+
     stages {
-        stage('Smoke Test') {
+
+        stage('Checkout') {
             steps {
-                sh 'docker --version'
-                sh 'docker ps'
+                checkout scm
+            }
+        }
+
+        stage('Build Images') {
+            steps {
+                sh 'docker-compose up --build'
+            }
+        }
+
+        stage('Backend Tests') {
+            steps {
+                sh 'docker compose run --rm backend pytest'
+            }
+        }
+
+        stage('Integration Tests') {
+            steps {
+                sh '''
+                    docker compose up -d
+                    sleep 5
+                    docker compose exec backend pytest tests/integration
+                '''
             }
         }
     }
+
+    post {
+        always {
+            sh 'dcoker-compose down -v'
+        }
+        failure {
+            echo 'CI failed'
+        }
+        success {
+            echo 'CI passed'
+        }
+    }
+
 }
