@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    enviroment {
+    environment {
         COMPOSE_FILE = 'docker-compose.yml'
     }
 
