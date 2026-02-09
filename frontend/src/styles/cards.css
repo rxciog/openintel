@@ -1,9 +1,9 @@
 .card {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1rem;
-  background: white;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px;
+  transition: transform 0.2s ease;
 }
 
 .card h3 {
@@ -14,23 +14,33 @@
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border-color: #4b5563;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  padding: 0.35rem 0;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 0.9rem;
 }
 
 .label {
-  color: #6b7280;
-  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 .value {
-  font-weight: 500;
+  color: var(--text-main);
   text-align: right;
-  max-width: 60%;
-  word-break: break-word;
+}
+
+.status-badge {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--status-green);
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }

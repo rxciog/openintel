@@ -31,8 +31,22 @@ export async function analyze(query: string) {
   })
 
   if (!res.ok) {
-    const text = await res.text()
-    throw new Error(text || 'Request failed')
+    let errorMessage = 'Request failed';
+    try {
+      const errorData = await res.json();
+      
+      // Check if it's a validation error (e.g., from FastAPI/Pydantic)
+      if (errorData.detail && Array.isArray(errorData.detail)) {
+        // Extract the first error message (e.g., "value is not a valid IPv4 address")
+        errorMessage = errorData.detail[0].msg || 'Invalid input format';
+      } else {
+        errorMessage = errorData.message || errorData.error || errorMessage;
+      }
+    } catch {
+      const text = await res.text();
+      errorMessage = text || errorMessage;
+    }
+    throw new Error(errorMessage);
   }
 
   return {

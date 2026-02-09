@@ -3,6 +3,7 @@ import SummaryCard from "./cards/SummaryCard.vue"
 import NetworkCard from "./cards//NetworkCard.vue"
 import DNSCard from "./cards/DNSCard.vue"
 import SSLCard from "./cards/SSLCard.vue"
+import LoadingSpinner from "./LoadingSpinner.vue"
 
 
 defineProps<{
@@ -17,9 +18,14 @@ defineProps<{
 
 <template>
   <section class="results">
-    <p v-if="loading">Analyzing…</p>
+    <LoadingSpinner v-if="loading" />
 
-    <p v-else-if="error" class="error">{{ error }}</p>
+    <div v-else-if="error" class="error-container">
+      <div class="error-content">
+        <span class="error-icon">⚠️</span>
+        <p>{{ error }}</p>
+      </div>
+    </div>
     
     <div v-else-if="result">
       <h3>{{ result.kind.toUpperCase() }} Analysis</h3>
@@ -68,7 +74,8 @@ defineProps<{
 
 <style scoped>
 .results {
-  border: 1px solid #ddd;
+  border: 1px solid #3a3939;
+  border-radius: .5rem;
   padding: 1rem;
   min-height: 200px;
   max-width: 1200px;
@@ -86,4 +93,25 @@ defineProps<{
   gap: 1rem;
 }
 
+.error-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.error-content {
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  color: #fca5a5;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 0 15px rgba(220, 38, 38, 0.2);
+}
+
+.error-icon {
+  font-size: 1.2rem;
+}
 </style>

@@ -25,7 +25,10 @@ async function onSearch(query: string) {
 
 <template>
   <main class="container">
-    <h1>OpenIntel</h1>
+    <header class="hero">
+      <h1>OpenIntel</h1>
+      <p class="tagline"> IP and domain intelligence analysis</p>
+    </header>
     <div class="info">
         <SearchBox @search="onSearch" />
 
