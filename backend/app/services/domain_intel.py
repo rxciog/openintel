@@ -56,7 +56,7 @@ async def analyze_domain(input_value: str):
     results["dns"]["ips"] = get_a_records(domain)
 
     # Mail Servers 
-    results["dns"]["ms"] = get_mx_records(domain)
+    results["dns"]["mx"] = get_mx_records(domain)
     
     # Domain RDAP
     try:
